@@ -100,17 +100,47 @@ body {
   top: 0;
   left: 0;
   bottom: 0;
+  height: 100vh;
   z-index: 100;
-  padding: 24px 16px;
+  padding: 20px 14px 20px 14px;
   transition: all 0.3s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(6, 78, 59, 0.25) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(6, 78, 59, 0.2);
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 78, 59, 0.45);
 }
 
 .brand-header {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 8px 24px 8px;
+  padding: 0 6px 16px 6px;
   border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: -20px;
+  margin-top: -20px;
+  padding-top: 20px;
+  background: var(--surface);
+  z-index: 10;
+  flex-shrink: 0;
 }
 
 .brand-icon {
@@ -143,21 +173,22 @@ body {
 
 .nav-links {
   list-style: none;
-  margin-top: 24px;
+  margin-top: 14px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+  flex: 1 0 auto;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 14px;
+  padding: 11px 13px;
   border-radius: var(--radius-sm);
   color: var(--text-muted);
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 0.93rem;
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
@@ -166,7 +197,7 @@ body {
 .nav-item:hover {
   background: var(--primary-subtle);
   color: var(--primary);
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
 .nav-item.active {
@@ -181,12 +212,14 @@ body {
 }
 
 .sidebar-footer {
-  margin-top: auto;
+  margin-top: 20px;
   padding-top: 16px;
+  padding-bottom: 8px;
   border-top: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 /* User Card in Sidebar */
