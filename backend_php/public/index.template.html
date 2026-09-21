@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qur'an Platform - Learning, Memorization & Worship</title>
+  <meta name="description" content="A modern Islamic educational and worship platform featuring authentic Quran recitation, spaced-repetition Hifz, Tajweed lessons, Tafsir exegesis, Tawhid, Hadith, Duas, Adhkar, and accurate Prayer Times.">
+
+  <!-- Google Fonts: Amiri (Arabic) & Plus Jakarta Sans (English UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Remix Icon (Modern Icon UI) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
+  <!-- Bootstrap Icons (Fallback & legacy support) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- INLINE_CSS_PLACEHOLDER -->
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Desktop Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-icon">
+          <i class="ri-book-open-fill"></i>
+        </div>
+        <div>
+          <div class="brand-title">Qur'an Platform</div>
+          <div class="brand-subtitle">Hifz & Learning</div>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li class="nav-item active" data-nav="home">
+          <i class="ri-layout-grid-line icon"></i>
+          <span>Dashboard</span>
+        </li>
+        <li class="nav-item" data-nav="quran">
+          <i class="ri-book-open-line icon"></i>
+          <span>The Holy Qur'an</span>
+        </li>
+        <li class="nav-item" data-nav="memorize">
+          <i class="ri-sparkles-line icon"></i>
+          <span>Hifz & Memorize</span>
+        </li>
+        <li class="nav-item" data-nav="revision">
+          <i class="ri-loop-right-line icon"></i>
+          <span>Muraja'ah Revision</span>
+        </li>
+
+        <div class="sidebar-section-title">Islamic Learning</div>
+        <li class="nav-item" data-nav="tajweed">
+          <i class="ri-music-2-line icon"></i>
+          <span>Tajweed Rules</span>
+        </li>
+        <li class="nav-item" data-nav="tafsir">
+          <i class="ri-article-line icon"></i>
+          <span>Tafsir Exegesis</span>
+        </li>
+        <li class="nav-item" data-nav="tawhid">
+          <i class="ri-shield-check-line icon"></i>
+          <span>Tawhid & 'Aqeedah</span>
+        </li>
+        <li class="nav-item" data-nav="hadith">
+          <i class="ri-double-quotes-l icon"></i>
+          <span>Hadith Library</span>
+        </li>
+        <li class="nav-item" data-nav="duas">
+          <i class="ri-hand-heart-line icon"></i>
+          <span>Duas & Supplications</span>
+        </li>
+        <li class="nav-item" data-nav="names-of-allah">
+          <i class="ri-star-smile-line icon"></i>
+          <span>99 Names of Allah</span>
+        </li>
+
+        <div class="sidebar-section-title">Worship & Practices</div>
+        <li class="nav-item" data-nav="prayer-times">
+          <i class="ri-time-line icon"></i>
+          <span>Prayer Times</span>
+        </li>
+        <li class="nav-item" data-nav="qibla">
+          <i class="ri-compass-3-line icon"></i>
+          <span>Qibla Direction</span>
+        </li>
+        <li class="nav-item" data-nav="adhkar">
+          <i class="ri-fingerprint-line icon"></i>
+          <span>Adhkar & Tasbih</span>
+        </li>
+        <li class="nav-item" data-nav="hijri">
+          <i class="ri-calendar-event-line icon"></i>
+          <span>Hijri Calendar</span>
+        </li>
+
+        <div class="sidebar-section-title">My Library</div>
+        <li class="nav-item" data-nav="bookmarks">
+          <i class="ri-bookmark-3-line icon"></i>
+          <span>Unified Bookmarks</span>
+        </li>
+        <li class="nav-item" data-nav="progress-analytics">
+          <i class="ri-bar-chart-box-line icon"></i>
+          <span>Analytics</span>
+        </li>
+        <li class="nav-item" data-nav="profile">
+          <i class="ri-user-settings-line icon"></i>
+          <span>Profile</span>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-card-mini" onclick="navigateTo('profile')">
+          <div class="user-avatar" id="sidebar-user-avatar">U</div>
+          <div class="user-meta">
+            <div class="user-meta-name" id="sidebar-user-name">Guest Student</div>
+            <div class="user-meta-streak" id="sidebar-user-streak">Sign in for progress</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="top-bar-title" id="page-heading">
+          <span>Dashboard</span>
+        </div>
+
+        <button class="topbar-search-trigger" onclick="openGlobalSearchModal()" title="Global Search (Ctrl + K)">
+          <i class="ri-search-2-line"></i>
+          <span>Search Quran, Hadith, Duas, Lessons...</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+
+        <div class="top-bar-actions">
+          <button class="icon-btn" id="theme-toggle-btn" title="Toggle Theme">
+            <i class="ri-moon-line"></i>
+          </button>
+          <button class="btn btn-sm btn-primary" onclick="openPlanModal()">
+            <i class="ri-add-circle-line"></i> New Plan
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Dynamic Content Container -->
+      <main class="content-area" id="main-view-container">
+        <!-- Rendered dynamically by app.js -->
+      </main>
+    </div>
+  </div>
+
+  <!-- Sticky Global Audio Player Bar -->
+  <div class="audio-bar" id="global-audio-bar">
+    <div class="audio-now-playing">
+      <div class="audio-cover">
+        <i class="ri-disc-line"></i>
+      </div>
+      <div>
+        <div class="audio-meta-title" id="audio-current-title">Surah Al-Fatihah</div>
+        <div class="audio-meta-reciter" id="audio-current-sub">Select an Ayah to play</div>
+      </div>
+    </div>
+
+    <div class="audio-controls-center">
+      <div class="audio-buttons">
+        <button class="icon-btn" onclick="AudioPlayer.prev()" title="Previous Ayah">
+          <i class="ri-skip-back-fill"></i>
+        </button>
+        <button class="play-pause-btn" onclick="AudioPlayer.togglePlay()" title="Play / Pause">
+          <i class="ri-play-fill" id="audio-play-pause-icon"></i>
+        </button>
+        <button class="icon-btn" onclick="AudioPlayer.next()" title="Next Ayah">
+          <i class="ri-skip-forward-fill"></i>
+        </button>
+        <button class="icon-btn" id="audio-repeat-btn" onclick="openRepeatModal()" title="Repeat Recitation">
+          <i class="ri-repeat-2-line" id="audio-repeat-icon"></i>
+          <span id="repeat-badge" style="font-size:0.68rem; font-weight:700; margin-left:3px; background:var(--border); color:var(--text-muted); padding:1px 5px; border-radius:8px; white-space:nowrap;">1x</span>
+        </button>
+      </div>
+
+      <div class="audio-progress-row">
+        <span id="audio-cur-time">0:00</span>
+        <input type="range" class="audio-seek-slider" id="audio-slider" min="0" max="100" value="0">
+        <span id="audio-dur-time">0:00</span>
+      </div>
+    </div>
+
+    <div class="audio-options-right">
+      <button class="speed-btn" onclick="cycleSpeed(this)">1.0x</button>
+      <select class="reciter-select" id="global-reciter-select" onchange="AudioPlayer.setReciter(this.value)">
+        <option value="mishari_alafasy">Mishari Rashid Al-Afasy</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-item active" data-nav="home">
+      <i class="ri-layout-grid-line icon"></i>
+      <span>Home</span>
+    </div>
+    <div class="mobile-nav-item" data-nav="quran">
+      <i class="ri-book-open-line icon"></i>
+      <span>Qur'an</span>
+    </div>
+    <div class="mobile-nav-item" data-nav="memorize">
+      <i class="ri-sparkles-line icon"></i>
+      <span>Hifz</span>
+    </div>
+    <div class="mobile-nav-item" data-nav="prayer-times">
+      <i class="ri-time-line icon"></i>
+      <span>Prayer</span>
+    </div>
+    <div class="mobile-nav-item" data-nav="adhkar">
+      <i class="ri-fingerprint-line icon"></i>
+      <span>Worship</span>
+    </div>
+  </nav>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay" id="modal-overlay" onclick="if(event.target === this) closeModal()">
+    <div class="modal-box" id="modal-body-container">
+      <!-- Injected by app.js -->
+    </div>
+  </div>
+
+  <!-- INLINE_JS_PLACEHOLDER -->
+
+  <script>
+    let speeds = [0.75, 1.0, 1.25];
+    let curSpdIdx = 1;
+    function cycleSpeed(el) {
+      curSpdIdx = (curSpdIdx + 1) % speeds.length;
+      const spd = speeds[curSpdIdx];
+      el.innerText = `${spd}x`;
+      AudioPlayer.setSpeed(spd);
+    }
+
+    // Keyboard shortcut for Global Search (Ctrl + K or Command + K)
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        openGlobalSearchModal();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<?php
+// Optional Database configuration for NairaHost / cPanel MySQL
+// If this file is renamed to database.local.php, it overrides SQLite.
+// Otherwise, SQLite (quran_hifz.sqlite) works automatically with ZERO configuration!
+
+return [
+    // For cPanel MySQL:
+    // 'DATABASE_URL' => 'mysql:host=localhost;dbname=YOURCPANEL_quran;charset=utf8mb4',
+    // 'DB_USER' => 'YOURCPANEL_dbuser',
+    // 'DB_PASS' => 'YourPassword123!',
+];

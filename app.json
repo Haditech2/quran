@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Quran Memorization App",
+    "slug": "quran-memorization-app",
+    "scheme": "quranmemorization",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#064e3b",
+      "resizeMode": "contain",
+      "image": "./src/assets/logo.png"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "com.quranmemorization.app",
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "ACCESS_WIFI_STATE",
+        "POST_NOTIFICATIONS",
+        "RECORD_AUDIO",
+        "MODIFY_AUDIO_SETTINGS",
+        "WAKE_LOCK"
+      ]
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.quranmemorization.app",
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"],
+        "NSMicrophoneUsageDescription": "Allow Quran Memorization App to record your recitation for AI grading and review.",
+        "NSPermissionsUsageDescription": "Allow Quran Memorization App to send daily Hifz reminders and revision schedules."
+      }
+    },
+    "plugins": ["expo-av"],
+    "extra": {}
+  }
+}

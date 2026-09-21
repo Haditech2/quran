@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+php8/
+.expo/
+.expo-shared/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Virtual environments
+venv/
+env/
+.env.local
+
+# Archives and binaries
+*.zip
+*.tar.gz
+*.apk
+*.aab
+
+# OS files
+.DS_Store
+Thumbs.db
