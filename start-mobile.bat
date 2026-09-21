@@ -4,7 +4,7 @@ set "PATH=%USERPROFILE%\AppData\Local\Programs\nodejs;%PATH%"
 
 echo ===================================================
 echo   Quran Memorization Mobile App (Expo)
-echo   Target Backend: https://quran.hadisub.online
+echo   Target Backend: Flask on Vercel (https://quran-beige-xi.vercel.app)
 echo ===================================================
 echo.
 

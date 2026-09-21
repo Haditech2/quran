@@ -17,7 +17,7 @@ export function resolveApiUrl(pathOrUrl: string): string {
   if (pathOrUrl.startsWith('http://') || pathOrUrl.startsWith('https://')) {
     return pathOrUrl;
   }
-  const base = getApiBaseUrls()[0] ?? 'http://127.0.0.1:8000';
+  const base = getApiBaseUrls()[0] ?? 'https://quran-beige-xi.vercel.app';
   return `${base}${pathOrUrl.startsWith('/') ? pathOrUrl : `/${pathOrUrl}`}`;
 }
 
