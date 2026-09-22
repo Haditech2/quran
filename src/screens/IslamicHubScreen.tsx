@@ -39,6 +39,8 @@ import {
   TawhidCategory,
   HijriEvent,
   BookmarkItem,
+  fetchTafsirAyah,
+  TafsirData,
 } from '@/services/islamicApi';
 
 type ModuleType =
@@ -50,6 +52,7 @@ type ModuleType =
   | 'hadith'
   | 'names'
   | 'tajweed'
+  | 'tafsir'
   | 'tawhid'
   | 'hijri'
   | 'bookmarks';
@@ -69,6 +72,7 @@ const MODULE_TABS: ModuleTab[] = [
   { id: 'hadith', label: 'Hadith', icon: 'chatbubbles-outline' },
   { id: 'names', label: '99 Names', icon: 'star-outline' },
   { id: 'tajweed', label: 'Tajweed', icon: 'musical-notes-outline' },
+  { id: 'tafsir', label: 'Tafsir', icon: 'book-outline' },
   { id: 'tawhid', label: 'Tawhid', icon: 'shield-checkmark-outline' },
   { id: 'hijri', label: 'Hijri', icon: 'calendar-outline' },
   { id: 'bookmarks', label: 'Bookmarks', icon: 'bookmark-outline' },
@@ -115,6 +119,11 @@ export default function IslamicHubScreen() {
 
   // Tajweed State
   const [tajweedCats, setTajweedCats] = useState<TajweedCategory[]>([]);
+
+  // Tafsir State
+  const [tafsirSurah, setTafsirSurah] = useState(1);
+  const [tafsirAyah, setTafsirAyah] = useState(1);
+  const [tafsirData, setTafsirData] = useState<TafsirData | null>(null);
 
   // Tawhid State
   const [tawhidCats, setTawhidCats] = useState<TawhidCategory[]>([]);
@@ -166,6 +175,9 @@ export default function IslamicHubScreen() {
         } else if (activeModule === 'tajweed') {
           const tc = await fetchTajweedCategories();
           setTajweedCats(tc);
+        } else if (activeModule === 'tafsir') {
+          const td = await fetchTafsirAyah(tafsirSurah, tafsirAyah);
+          if (td) setTafsirData(td);
         } else if (activeModule === 'tawhid') {
           const twc = await fetchTawhidCategories();
           setTawhidCats(twc);
@@ -182,7 +194,7 @@ export default function IslamicHubScreen() {
       }
     };
     void loadModuleData();
-  }, [activeModule, selectedCity, adhkarCat, duaCat, hadithColl]);
+  }, [activeModule, selectedCity, adhkarCat, duaCat, hadithColl, tafsirSurah, tafsirAyah]);
 
   // Tasbih Tap Handlers
   const handleTasbihTap = () => {
@@ -581,7 +593,72 @@ export default function IslamicHubScreen() {
             )}
 
             {/* ========================================================= */}
-            {/* 9. TAWHID & 'AQEEDAH                                      */}
+            {/* 9. TAFSIR EXEGESIS                                        */}
+            {/* ========================================================= */}
+            {activeModule === 'tafsir' && (
+              <View>
+                {/* Ayah Navigation Bar */}
+                <View style={styles.tafsirNavCard}>
+                  <View style={styles.tafsirNavHeader}>
+                    <Pressable
+                      style={styles.tafsirNavBtn}
+                      onPress={() => setTafsirAyah((a) => Math.max(1, a - 1))}
+                    >
+                      <Ionicons name="chevron-back" size={16} color={colors.primary} />
+                      <Text style={styles.tafsirNavBtnText}>Prev Ayah</Text>
+                    </Pressable>
+
+                    <Text style={styles.tafsirVerseKeyBadge}>
+                      Surah {tafsirSurah}:{tafsirAyah}
+                    </Text>
+
+                    <Pressable
+                      style={styles.tafsirNavBtn}
+                      onPress={() => setTafsirAyah((a) => a + 1)}
+                    >
+                      <Text style={styles.tafsirNavBtnText}>Next Ayah</Text>
+                      <Ionicons name="chevron-forward" size={16} color={colors.primary} />
+                    </Pressable>
+                  </View>
+                  <Text style={styles.tafsirSourceLabel}>
+                    Source: {tafsirData?.source_name || 'Tafsir Ibn Kathir (Authentic Classical Exegesis)'}
+                  </Text>
+                </View>
+
+                {/* Ayah Arabic & Translation Box */}
+                <View style={styles.arabicBox}>
+                  <Text style={styles.arabicText}>
+                    {tafsirData?.text_arabic || 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ'}
+                  </Text>
+                  <Text style={styles.translationText}>
+                    {tafsirData?.text_translation ||
+                      'In the name of Allah, the Entirely Merciful, the Especially Merciful.'}
+                  </Text>
+                </View>
+
+                {/* Commentary Card */}
+                <View style={styles.tafsirContentCard}>
+                  <View style={styles.tafsirHeaderRow}>
+                    <Ionicons name="book" size={18} color={colors.primary} />
+                    <Text style={styles.tafsirSectionHeading}>Commentary & Insights</Text>
+                  </View>
+                  <Text style={styles.tafsirBodyText}>
+                    {tafsirData?.content ||
+                      'The Companions started the Book of Allah with it. Scholars agree that Bismillah is a verse in Surah An-Naml (27:30). The name "Allah" is the Greatest Name of the Lord, derived from Al-Ilah (the One who alone deserves to be worshipped). Ar-Rahman is more intensive than Ar-Rahim, denoting vast, all-encompassing mercy for all creation in this world, while Ar-Rahim denotes special mercy for the believers in the Hereafter.'}
+                  </Text>
+
+                  {tafsirData?.related_verses ? (
+                    <View style={styles.tafsirMetaBox}>
+                      <Text style={styles.tafsirMetaLabel}>Cross References:</Text>
+                      <Text style={styles.tafsirMetaVal}>{tafsirData.related_verses}</Text>
+                    </View>
+                  ) : null}
+                </View>
+              </View>
+            )}
+
+            {/* ========================================================= */}
+            {/* 10. TAWHID & 'AQEEDAH                                     */}
             {/* ========================================================= */}
             {activeModule === 'tawhid' && (
               <View>
@@ -908,6 +985,7 @@ const styles = StyleSheet.create({
   adhkarCountBadgeDone: { backgroundColor: colors.success },
   adhkarCountText: { fontSize: 12, fontWeight: '700', color: colors.primary },
   adhkarCountTextDone: { color: '#ffffff' },
+  arabicBox: { backgroundColor: colors.surfaceSubtle, borderRadius: radius.md, padding: 16, marginBottom: 14, borderWidth: 1, borderColor: colors.borderSubtle },
   arabicText: { fontSize: 20, textAlign: 'right', color: colors.primaryDark, lineHeight: 34, marginVertical: 8, fontFamily: 'serif' },
   transliterationText: { fontSize: 13, fontStyle: 'italic', color: colors.textMuted, marginBottom: 6 },
   translationText: { fontSize: 14, color: colors.text, lineHeight: 22 },
@@ -956,6 +1034,21 @@ const styles = StyleSheet.create({
   tawhidTitle: { fontSize: 15, fontWeight: '700', color: colors.text },
   tawhidArabic: { fontSize: 13, color: colors.accent },
   tawhidDesc: { fontSize: 13, color: colors.textMuted, lineHeight: 20 },
+
+  // Tafsir
+  tafsirNavCard: { backgroundColor: colors.surface, borderRadius: radius.md, padding: 14, marginBottom: 12, borderWidth: 1, borderColor: colors.border },
+  tafsirNavHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  tafsirNavBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingVertical: 6, paddingHorizontal: 10, borderRadius: radius.sm, backgroundColor: colors.primarySubtle },
+  tafsirNavBtnText: { fontSize: 12, fontWeight: '700', color: colors.primary },
+  tafsirVerseKeyBadge: { fontSize: 15, fontWeight: '800', color: colors.text },
+  tafsirSourceLabel: { fontSize: 11, color: colors.textMuted, marginTop: 8, textAlign: 'center' },
+  tafsirContentCard: { backgroundColor: colors.surface, borderRadius: radius.md, padding: 16, marginBottom: 14, borderWidth: 1, borderColor: colors.border },
+  tafsirHeaderRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10 },
+  tafsirSectionHeading: { fontSize: 14, fontWeight: '800', color: colors.primary },
+  tafsirBodyText: { fontSize: 13, color: colors.text, lineHeight: 21 },
+  tafsirMetaBox: { marginTop: 12, paddingTop: 10, borderTopWidth: 1, borderTopColor: colors.borderSubtle },
+  tafsirMetaLabel: { fontSize: 11, fontWeight: '700', color: colors.textMuted },
+  tafsirMetaVal: { fontSize: 12, color: colors.accent, marginTop: 2 },
 
   // Hijri
   hijriHeaderCard: { backgroundColor: colors.surface, borderRadius: radius.md, padding: 20, alignItems: 'center', marginBottom: 16, borderWidth: 1, borderColor: colors.border },

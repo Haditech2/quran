@@ -281,3 +281,21 @@ export async function toggleBookmark(item: { item_type: string; item_id: string;
     body: JSON.stringify(item),
   });
 }
+
+// 12. Tafsir
+export interface TafsirData {
+  surah_number: number;
+  ayah_number: number;
+  verse_key: string;
+  source_name: string;
+  author?: string;
+  text_arabic?: string;
+  text_translation?: string;
+  content: string;
+  source_attribution?: string;
+  related_verses?: string;
+}
+
+export async function fetchTafsirAyah(surahNumber: number, ayahNumber: number, source = 'ibn_kathir'): Promise<TafsirData | null> {
+  return apiFetch<TafsirData>(`/api/tafsir/ayah/${surahNumber}/${ayahNumber}?source=${source}`);
+}
