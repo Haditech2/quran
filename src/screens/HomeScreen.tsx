@@ -9,12 +9,14 @@ import { colors, radius, spacing } from '@/theme';
 import AudioPlayerBar from '@/components/AudioPlayerBar';
 import PermissionModal from '@/components/PermissionModal';
 import { checkPermissions, PermissionStatus } from '@/services/permissions';
+import { fetchPlatformOverview, PlatformOverview } from '@/services/islamicApi';
 
 export default function HomeScreen() {
   const navigation = useNavigation<any>();
   const { chapters } = useQuranCatalog();
   const { progress, dueReviews, weakAyahs } = useAppState();
   const [permissionModalVisible, setPermissionModalVisible] = useState(false);
+  const [overview, setOverview] = useState<PlatformOverview | null>(null);
   const [permStatus, setPermStatus] = useState<PermissionStatus>({
     notificationsGranted: false,
     cellularStreamingAllowed: true,
@@ -29,10 +31,13 @@ export default function HomeScreen() {
   useEffect(() => {
     void checkPermissions().then((status) => {
       setPermStatus(status);
-      // If user hasn't seen the permissions modal yet, show it!
       if (!status.hasPrompted) {
         setPermissionModalVisible(true);
       }
+    });
+
+    void fetchPlatformOverview().then((data) => {
+      if (data) setOverview(data);
     });
   }, []);
 
@@ -67,6 +72,83 @@ export default function HomeScreen() {
                 <Ionicons name="school-outline" size={16} color={colors.accent} />
                 <Text style={styles.heroSecondaryBtnText}>Start Memorizing</Text>
               </Pressable>
+            </View>
+          </View>
+
+          {/* Live Islamic Prayer & Hijri Strip */}
+          <Pressable
+            style={styles.islamicLiveStrip}
+            onPress={() => navigation.navigate('IslamicHub', { initialModule: 'prayer-times' })}
+          >
+            <View style={styles.liveStripItem}>
+              <View style={styles.liveStripIconBox}>
+                <Ionicons name="time" size={16} color={colors.accent} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.liveStripLabel}>NEXT PRAYER</Text>
+                <Text style={styles.liveStripVal} numberOfLines={1}>
+                  {overview?.next_prayer
+                    ? `${overview.next_prayer.name} (${overview.next_prayer.countdown_formatted})`
+                    : 'Fajr in 5h 10m • 05:10'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.liveStripDivider} />
+
+            <View style={styles.liveStripItem}>
+              <View style={[styles.liveStripIconBox, { backgroundColor: colors.primarySubtle }]}>
+                <Ionicons name="moon" size={16} color={colors.primary} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.liveStripLabel}>HIJRI DATE</Text>
+                <Text style={styles.liveStripVal} numberOfLines={1}>
+                  {overview?.hijri?.formatted || "9 Rabi' al-Thani 1448 AH"}
+                </Text>
+              </View>
+            </View>
+          </Pressable>
+
+          {/* Islamic Learning & Worship 12 Modules Grid */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Islamic Learning & Worship</Text>
+              <Pressable onPress={() => navigation.navigate('IslamicHub')}>
+                <Text style={styles.sectionLink}>Explore All 12 Modules →</Text>
+              </Pressable>
+            </View>
+
+            <View style={styles.moduleGrid}>
+              {[
+                { id: 'tajweed', title: 'Tajweed Rules', subtitle: 'Rules & Quizzes', icon: 'musical-notes-outline', color: colors.primary },
+                { id: 'tafsir', title: 'Tafsir Exegesis', subtitle: 'Ibn Kathir Classical', icon: 'book-outline', color: '#0f766e' },
+                { id: 'tawhid', title: 'Tawhid & \'Aqeedah', subtitle: 'Sunni Creed', icon: 'shield-checkmark-outline', color: colors.accent },
+                { id: 'hadith', title: 'Hadith Library', subtitle: '40 Nawawi & Bukhari', icon: 'chatbubbles-outline', color: '#0369a1' },
+                { id: 'duas', title: 'Duas & Supplications', subtitle: 'Hisn al-Muslim', icon: 'hand-left-outline', color: '#e11d48' },
+                { id: 'adhkar', title: 'Daily Adhkar', subtitle: 'Morning & Evening', icon: 'heart-outline', color: '#16a34a' },
+                { id: 'tasbih', title: 'Digital Tasbih', subtitle: 'Tap Counter', icon: 'finger-print-outline', color: colors.accent },
+                { id: 'names', title: '99 Names of Allah', subtitle: 'Asma\'ul Husna', icon: 'star-outline', color: colors.primary },
+                { id: 'prayer-times', title: 'Prayer Times', subtitle: '15 Nigerian Cities', icon: 'time-outline', color: '#0284c7' },
+                { id: 'qibla', title: 'Qibla Direction', subtitle: 'Kaaba Compass', icon: 'compass-outline', color: '#059669' },
+                { id: 'hijri', title: 'Hijri Calendar', subtitle: 'Milestones & Dates', icon: 'calendar-outline', color: '#7c3aed' },
+                { id: 'bookmarks', title: 'Unified Bookmarks', subtitle: 'Saved Library', icon: 'bookmark-outline', color: '#ca8a04' },
+              ].map((m) => (
+                <Pressable
+                  key={m.id}
+                  style={styles.moduleCard}
+                  onPress={() => navigation.navigate('IslamicHub', { initialModule: m.id })}
+                >
+                  <View style={[styles.moduleIconBox, { backgroundColor: `${m.color}15` }]}>
+                    <Ionicons name={m.icon as any} size={20} color={m.color} />
+                  </View>
+                  <Text style={styles.moduleCardTitle} numberOfLines={1}>
+                    {m.title}
+                  </Text>
+                  <Text style={styles.moduleCardSub} numberOfLines={1}>
+                    {m.subtitle}
+                  </Text>
+                </Pressable>
+              ))}
             </View>
           </View>
 
@@ -406,5 +488,93 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 13,
     fontWeight: '700',
+  },
+
+  // Live Islamic Prayer & Hijri Strip
+  islamicLiveStrip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderRadius: radius.md,
+    padding: 12,
+    marginBottom: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    shadowColor: colors.cardShadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  liveStripItem: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  liveStripIconBox: {
+    width: 34,
+    height: 34,
+    borderRadius: radius.sm,
+    backgroundColor: colors.accentSubtle,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  liveStripLabel: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: colors.textLight,
+    letterSpacing: 0.6,
+  },
+  liveStripVal: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colors.text,
+    marginTop: 1,
+  },
+  liveStripDivider: {
+    width: 1,
+    height: 32,
+    backgroundColor: colors.borderSubtle,
+    marginHorizontal: 10,
+  },
+
+  // Module Grid
+  moduleGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginTop: 6,
+  },
+  moduleCard: {
+    width: '48.5%',
+    backgroundColor: colors.surface,
+    borderRadius: radius.md,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: colors.border,
+    shadowColor: colors.cardShadow,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 1,
+  },
+  moduleIconBox: {
+    width: 36,
+    height: 36,
+    borderRadius: radius.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  moduleCardTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colors.text,
+  },
+  moduleCardSub: {
+    fontSize: 11,
+    color: colors.textMuted,
+    marginTop: 2,
   },
 });
