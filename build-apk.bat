@@ -1,6 +1,6 @@
 @echo off
 title Build Quran Memorization APK (Expo EAS)
-set "PATH=%USERPROFILE%\AppData\Local\Programs\nodejs;%PATH%"
+set "PATH=C:\Program Files\nodejs;%USERPROFILE%\AppData\Local\Programs\nodejs;%PATH%"
 
 echo ===================================================
 echo   Quran Memorization App - Android APK Builder

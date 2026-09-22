@@ -1,6 +1,6 @@
 @echo off
 title Quran Hifz Mobile App (Expo)
-set "PATH=%USERPROFILE%\AppData\Local\Programs\nodejs;%PATH%"
+set "PATH=C:\Program Files\nodejs;%USERPROFILE%\AppData\Local\Programs\nodejs;%PATH%"
 
 echo ===================================================
 echo   Quran Memorization Mobile App (Expo)
